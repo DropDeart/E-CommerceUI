@@ -3,19 +3,114 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --soft-text-color: #6C7275;
+  --primary-text-color: #141718;
+  --active-text-color: #38CB89;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--primary-text-color);
 }
+/* Button Styles */
+.button-group {
+  margin-top: 32px !important;
+}
+
+.general-btn {
+  border-radius: 8px;
+  width: 100%;
+  background-color: var(--primary-text-color);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.general-delete-btn {
+  border-radius: 8px;
+  width: 100%;
+  background-color:#ff5858;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+
+/* Text Colors */
+.primary-text-color {
+  color: var(--primary-text-color) !important;
+}
+
+.secondary-text-color {
+  color: var(--soft-text-color) !important;
+}
+
+.active-text-color {
+  color: #38CB89 !important;
+}
+
+.swiper-pagination-bullet-active{
+  color: #141718 !important;
+  background: #141718 !important;
+}
+/*General Inputs*/
+
+.general-input {border: 0;padding: 8px 0;border-bottom: 1px solid var(--soft-text-color);background-color: transparent;}
+.general-input ~ .focus-border {position: absolute;bottom: 0;left: 0;width: 0;height: 2px; background-color: #38CB89;transition: 0.4s;}
+.general-input:focus ~ .focus-border,.has-content.general-input ~ .focus-border {width:100%;transition: 0.4s;}
+.general-input ~ label {position: absolute;left: 0;width: 100%;top: 9px;color: #aaa;transition: 0.3s;z-index: -1;}
+.general-input:focus ~ label, .has-content.general-input ~ label {top: -10px;font-size: 14px;color: #38CB89; transition: 0.3s;}
+input[type="text"] {width: 100%;box-sizing: border-box;}:focus {outline: none;}
+input[type="email"] {width: 100%;box-sizing: border-box;}:focus {outline: none;}
+input[type="password"] {width: 100%;box-sizing: border-box;}:focus {outline: none;}
+.form-group {position: relative;}
+
+.checkbox-input {
+  -webkit-appearance: none;  
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;              
+  height: 18px;             
+  border: 2px solid #ccc;   
+  border-radius: 4px;       
+  position: relative;       
+  cursor: pointer;         /* Fareyle üzerine gelindiğinde pointer işareti */
+  transition: border-color 0.3s ease, background-color 0.3s ease; /* Geçiş efekti */
+}
+
+.checkbox-input:checked {
+  background-color: #38CB89; /* Seçili olduğunda yeşil arka plan */
+  border-color: #38CB89;     /* Kenar rengi yeşil */
+}
+
+.checkbox-input:checked::before {
+  content: '';  /* İçerik boş, sadece şekil olacak */
+  position: absolute;
+  top: 3px;      /* Yukarıdan 3px, ortalamak için */
+  left: 1px;     /* Soldan 3px, ortalamak için */
+  width: 11px;   /* İşaretin genişliği */
+  height: 6px;   /* İşaretin yüksekliği */
+  border-left: 2px solid white;  /* Sol kenar */
+  border-bottom: 2px solid white; /* Alt kenar */
+  transform: rotate(-45deg);  /* X işareti gibi görünen işaret */
+}
+
+.checkbox-input:focus {
+  outline: none;
+}
+
