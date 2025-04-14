@@ -26,14 +26,14 @@ const LeftMenu = () => {
   
     const formData = new FormData();
     formData.append('file', selectedImage);
-    formData.append('token', session?.user.token || '');
-    formData.append('userId', session?.user.id || '');
     formData.append('fileName', selectedImage.name);
     formData.append('type', "1");
   
     try {
       const response = await fetch(`${baseURL}/api/user/updateProfileImage`, {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.user.token || ''}`},
         body: formData,
       });
   
@@ -110,8 +110,9 @@ const LeftMenu = () => {
             <li className='pb-4 pt-4 tracking-wide font-semibold border-b border-b-background'>
               <Link href="/">Kullanıcı Bilgilerim</Link>
             </li>
+            <li className='pb-4 pt-4 tracking-wide'><Link href="/adreslerim">Adreslerim</Link></li>
             <li className='pb-4 pt-4 tracking-wide'><Link href="/siparislerim">Siparişlerim</Link></li>
-            <li className='pb-4 pt-4 tracking-wide'><Link href="/odeme-bilgilerim">Ödeme Bilgilerim</Link></li>
+            <li className='pb-4 pt-4 tracking-wide'><Link href="/favorilerim">Favorilerim</Link></li>
             <li className='pb-4 pt-4 tracking-wide'>
               <button onClick={() => signOut()}>Çıkış</button>
             </li>
