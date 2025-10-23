@@ -57,10 +57,9 @@ const VerificationPage = () => {
       code: Yup.string().length(6, "Kod 6 haneli olmalıdır").required("Doğrulama kodu gereklidir"),
     }),
     onSubmit: async (values) => {
-      console.log('click');
       const verificationCode = values.code; // code state'i yerine formik.values.code kullanın
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/verify`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/Auth/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

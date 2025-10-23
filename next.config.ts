@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'localhost',
-        port: '7220',
+        hostname: 'dropdeart-001-site1.qtempurl.com',
+        port: '',
         pathname: '/uploads/**',
       },
     ],

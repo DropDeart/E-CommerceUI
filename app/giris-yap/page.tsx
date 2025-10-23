@@ -1,3 +1,4 @@
+// app/giris-yap/page.tsx
 "use client";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
@@ -6,64 +7,83 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/store/slices/userSlice";
+import { useDispatch } from "react-redux"; 
+import { setUser } from "@/store/slices/userSlice"; // Doğru path'i kontrol edin
 import { FaSpinner } from "react-icons/fa";
 
 export default function GirisYap() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setLoading(true);  
+    setLoading(true);
 
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: false, // NextAuth'ın client tarafında otomatik yönlendirmesini engelleriz
       email,
       password,
-    }); 
+      json: true, // Hatanın JSON olarak dönmesini sağlar
+    });
 
-    setLoading(false);  
+    setLoading(false);
 
     if (res?.error) {
+      console.error("Giriş sırasında NextAuth hatası:", res.error);
       try {
-        const errorResponse = JSON.parse(res.error);  
+        const errorData = JSON.parse(res.error);
 
-        if (res.status === 401) {
-          toast.error("E-posta veya şifre hatalı.");
-          return; 
-        }
+        // Hata kodlarına göre spesifik işlemler yapalım
+        switch (errorData.errorCode) {
+          case 401: // Kimlik bilgileri hatalı (E-posta veya şifre yanlış)
+            toast.error(errorData.errorMessage || "E-posta veya şifre hatalı.");
+            break;
+          case 1004:
+            const parts = errorData.errorMessage.split(':');           
+            const userId = parts[1];
+            const userEmail = parts[2];
+            const userName = parts.length > 3 ? decodeURIComponent(parts[3]) : 'Bilinmeyen Kullanıcı';
 
-        dispatch(setUser({userId:errorResponse.user.id, userMail: errorResponse.email, userName: errorResponse.user.name}));
-        
-        if (errorResponse?.redirectUrl) {
-          toast.info(errorResponse.errorMessage || "Yönlendiriliyorsunuz...");
-          setTimeout(() => {
-            router.push(errorResponse.redirectUrl);
-          }, 2000);
-          return;
-        } 
-
-        if (errorResponse?.errorMessage) {
-          toast.error(errorResponse.errorMessage);
-        } else {
-          toast.error("E-posta veya şifre hatalı.");
+            // Kullanıcı bilgilerini Redux store'a dispatch ediyoruz
+            if (userId && userEmail && dispatch) {
+              dispatch(setUser({
+                userId: userId,
+                userMail: userEmail,
+                userName: userName
+              }));
+            }
+            
+            toast.info("Hesabınız doğrulanmamış. Doğrulama sayfasına yönlendiriliyorsunuz...");
+            // Artık URL'ye query parametresi eklemeden yönlendiriyoruz.
+            // Bilgiler Redux'tan alınacak.
+            router.push("/kullanici-dogrulama");
+            break;
+          case 500: // Genel sunucu hatası
+            toast.error(errorData.errorMessage || "Sunucu hatası oluştu. Lütfen daha sonra tekrar deneyin.");
+            break;
+          case 501: // Beklenmedik kimlik doğrulama durumu
+            toast.error(errorData.errorMessage || "Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.");
+            break;
+          default: // Bilinmeyen diğer hatalar
+            toast.error(errorData.errorMessage || "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
+            break;
         }
 
       } catch (e) {
-        console.log(e);
-        toast.error("Bir hata oluştu. Lütfen tekrar deneyin.");
+        // Eğer res.error bir JSON string'i değilse (beklenmedik bir hata)
+        console.error("Hata yanıtı parse edilirken sorun oluştu:", e, "Orijinal hata:", res.error);
+        toast.error("Giriş işlemi sırasında beklenmedik bir hata oluştu.");
       }
-    } else {     
-      toast.success("Giriş başarılı!");
+    } else {
+      // Başarılı giriş: res.ok true ve res.error null/undefined olacaktır.
+      toast.success("Giriş başarılı! Yönlendiriliyorsunuz...");
       setTimeout(() => {
-        router.push("/");
-      });
+        router.push("/"); // Ana sayfaya veya başarılı giriş sonrası istenen sayfaya yönlendir
+      }, 500); // Küçük bir gecikme toast'ın görünmesi için
     }
   };
 
@@ -116,7 +136,7 @@ export default function GirisYap() {
 
               <button
                 type="button"
-                className="absolute right-4 text-gray-500"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
@@ -135,7 +155,7 @@ export default function GirisYap() {
 
             <button type="submit" className="general-btn w-full mt-8" disabled={loading}>
               {loading ? (
-                <span className="flex items-center">
+                <span className="flex items-center justify-center">
                   <p className="mr-2">Giriş Yapılıyor </p>
                   <FaSpinner className="animate-spin text-white" />
                 </span>

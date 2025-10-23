@@ -37,7 +37,7 @@ export default function KayitOl() {
       setLoading(true);
 
       try {
-        const response = await fetch(`${baseURL}/register`, {
+        const response = await fetch(`${baseURL}/api/Auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -48,12 +48,23 @@ export default function KayitOl() {
         });
 
         const data = await response.json();
+        console.log(data);
 
         if (!response.ok) {
           throw new Error(data.errorMessage || "Kayıt başarısız");
         }
 
-        dispatch(setUser({userId:data.token.user.id, userMail: data.token.user.email, userName: data.token.user.name}));
+        if (data.user) {
+          dispatch(setUser({
+            userId: data.user.id,
+            userMail: data.user.email,
+            userName: data.user.name,
+          }));
+        } else {
+          // Eğer user objesi beklenmedik bir şekilde gelmezse
+          console.error("Kayıt başarılı ancak kullanıcı bilgileri eksik geldi:", data);
+          toast.error("Kayıt başarılı ancak kullanıcı bilgileri alınamadı.");
+        }
 
 
         toast.success("Kayıt başarılı! E-posta doğrulaması için mailinizi kontrol edin. Yönlendiriliyorsunuz..");

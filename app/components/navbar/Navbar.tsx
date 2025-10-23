@@ -10,6 +10,8 @@ import Logo from "./Logo";
 import Search from "./Search";
 import User from "./User";
 import { AiOutlineUser, AiOutlineFileText, AiOutlineCreditCard, AiOutlineLogout  } from "react-icons/ai"
+import Image from "next/image";
+import { X } from "lucide-react";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -66,8 +68,8 @@ const Navbar = () => {
         </div>
         <ul className="hidden md:flex gap-6 text-gray-600 font-medium">
           <li><Link href="/">Anasayfa</Link></li>
-          <li><Link href="/Magaza">Mağaza</Link></li>
-          <li><Link href="/Hakkimizda">Hakkımızda</Link></li>
+          <li><Link href="/Kategoriler">Kategoriler</Link></li>
+          <li><Link href="/Urunler">Ürünler</Link></li>
           <li><Link href="/Iletisim">İletişim</Link></li>
         </ul>
 
@@ -143,38 +145,46 @@ const Navbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 z-50" onClick={toggleMenu}>
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 h-screen z-50" onClick={toggleMenu}>
           <div
             className="fixed left-0 top-0 bottom-0 w-64 bg-white shadow-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <span className="text-2xl font-semibold text-primary-text-color">Ljuss</span>
+              <div className="mb-5">
+                <Image
+                    src="/images/logo.png"
+                    alt="Auraa"
+                    width={60}
+                    height={60}
+                  />
+                  <span className="pl-2 text-xl font-bold">Auraa</span>
+              </div>
               <button onClick={toggleMenu} className="text-lg text-gray-500">
-                <i className="bi bi-x-lg"></i>
+                <X />
               </button>
             </div>
             <ul className="flex flex-col gap-6 text-primary-text-color font-medium">
               <li><Link href="/" onClick={toggleMenu}>Anasayfa</Link></li>
-              <li><Link href="/Magaza" onClick={toggleMenu}>Mağaza</Link></li>
-              <li><Link href="/Hakkimizda" onClick={toggleMenu}>Hakkımızda</Link></li>
+              <li><Link href="/Kategoriler" onClick={toggleMenu}>Kategoriler</Link></li>
+              <li><Link href="/Urunler" onClick={toggleMenu}>Ürünler</Link></li>
               <li><Link href="/Iletisim" onClick={toggleMenu}>İletişim</Link></li>
             </ul>
 
-            <div className="mt-6">
+            <div className="mt-20">
               <div className="flex justify-between items-center border-b py-4">
-                <span className="text-xl font-medium text-primary-text-color">Sepet</span>
+                <span className="font-medium text-primary-text-color">Sepet</span>
                 <div className="text-lg text-primary-text-color">
                   <i className="bi bi-bag"></i>
                 </div>
               </div>
               <div className="flex justify-between items-center border-b py-4">
-                <span className="text-xl font-medium text-primary-text-color">Favoriler</span>
+                <span className="font-medium text-primary-text-color">Favoriler</span>
                 <div className="text-lg text-primary-text-color">
                   <i className="bi bi-heart"></i>
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="mt-20">
                 {session ? (
                   <button onClick={() => signOut()} className="general-btn w-full">
                     Çıkış Yap
@@ -182,12 +192,7 @@ const Navbar = () => {
                 ) : (
                   <a href="/giris-yap" className="general-btn w-full">Giriş Yap</a>
                 )}
-              </div>
-              <div className="flex justify-center gap-4 mt-4">
-                <i className="bi bi-instagram text-2xl"></i>
-                <i className="bi bi-facebook text-2xl"></i>
-                <i className="bi bi-youtube text-2xl"></i>
-              </div>
+              </div>              
             </div>
           </div>
         </div>

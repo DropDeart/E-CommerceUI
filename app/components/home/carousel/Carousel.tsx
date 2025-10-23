@@ -2,25 +2,36 @@ import Image from "next/image";
 
 const Carousel = () => {
   return (
-    <div className="relative w-full h-[720px]">
+    <div className="relative w-full h-[540px]">
+      {/* Desktop */}
       <Image 
-        src="/images/carousel.png" 
-        alt="Hero Resmi" 
-        layout="fill" 
-        objectFit="cover" 
+        src="/images/carousel-web.png" 
+        alt="Auraa" 
+        fill
         priority
+        className="hidden xl:inline-block w-full h-full object-cover"
       />
-      <div className="absolute left-[13rem] bottom-[12rem] primary-text-color text-4xl font-semibold">
-        <div>Modern Tasarımların</div>
-        <div className="mt-2"><span className="text-yellow-50">Işık</span> ile Buluşması</div>
-        <div className="mt-4">
-            <div className="text-center text-xl font-medium py-4">
-                <a href="/GirisYap" className="general-btn">Keşfet</a>
-            </div>
-        </div>
-      </div>
+
+      {/* Tablet */}
+      <Image 
+        src="/images/carousel-tablet.png" 
+        alt="Auraa" 
+        fill
+        priority
+        className="hidden sm:inline-block xl:hidden w-full h-full object-cover"
+      />
+
+      {/* Mobile */}
+      <Image 
+        src="/images/carousel-mobile.png" 
+        alt="Auraa" 
+        fill
+        priority
+        className="inline-block md:hidden w-full h-full object-cover"
+      />
     </div>
   )
 }
+
 
 export default Carousel

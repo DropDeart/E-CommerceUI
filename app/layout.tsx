@@ -3,10 +3,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider, useSession } from "next-auth/react";
 import "./globals.css";
-import { Provider } from 'react-redux';
-import { store } from "@/store/store";
 import AdminLayout from "../app/layouts/AdminLayout";
 import UserLayout from "../app/layouts/UserLayout";
+import { ReduxProvider } from './providers/ReduxProvider';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +16,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
 
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -35,12 +35,13 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Provider store={store}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>       
+        <ReduxProvider> 
           <SessionProvider>
             <LayoutWrapper>{children}</LayoutWrapper>
           </SessionProvider>
-        </Provider>
+        </ReduxProvider>
+
       </body>
     </html>
   );
