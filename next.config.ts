@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'ljussapi20251028131047.azurewebsites.net/',
+        hostname: 'ljussapi20251028131047.azurewebsites.net',
         port: '',
         pathname: '/uploads/**',
       },
