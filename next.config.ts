@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'dropdeart-001-site1.qtempurl.com',
+        hostname: 'ljussapi20251028131047.azurewebsites.net/',
         port: '',
         pathname: '/uploads/**',
       },
