@@ -1,11 +1,11 @@
 import React from 'react'
 import Countdown from 'react-countdown';
 
-interface TimeProps {
-  endDate?: string 
+interface TimerProps {
+  endDate?: Date | string;
 }
 
-const timer = ({endDate}: TimeProps) => {
+const timer = ({endDate}: TimerProps) => {
   console.log(endDate);
  const date = endDate ? new Date(endDate) : undefined;
  return (

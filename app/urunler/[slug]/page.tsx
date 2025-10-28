@@ -183,8 +183,13 @@ const ProductDetailPage = () => {
             </div>
             <hr className="border-t-2 border-gray-300 my-10" />
             <div className={discountPrice && discountPrice >= 0 ? "block" : "hidden"}>              
-              <Timer endDate={productDetailObj?.discountEnd ? new Date(productDetailObj.discountEnd).toISOString() : undefined} />
-            </div>
+            <Timer
+              endDate={
+                productDetailObj?.discountEnd
+                  ? new Date(productDetailObj.discountEnd)
+                  : undefined
+              }
+            />            </div>
           </div>
         </div>
       </div>    
