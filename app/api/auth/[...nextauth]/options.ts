@@ -202,9 +202,12 @@ export const options: NextAuthOptions = {
       // 3. Access Token Süre Kontrolü ve Yenileme
       // Token'ın süresi dolmak üzereyse (örn. 5 dakika kala) veya dolduysa
       // `token.accessTokenExpires` bir timestamp (milisaniye) olduğu için `Date.now()` ile karşılaştırıyoruz.
-      const shouldRefreshTime = 5 * 60 * 1000; // 5 dakika (milisaniye cinsinden)
-      if (token.accessToken && token.accessTokenExpires && Date.now() < token.accessTokenExpires - shouldRefreshTime) {
-        // Access Token hala geçerli veya süresi dolmak üzere değil, yenilemeye gerek yok
+      const shouldRefreshTime = 5 * 60 * 1000; // 5 dakika
+      if (
+        token.accessToken &&
+        token.accessTokenExpires &&
+        Date.now() < Number(token.accessTokenExpires) - shouldRefreshTime
+      ) {
         console.log("JWT Callback - Access Token is still valid.");
         return token;
       }
